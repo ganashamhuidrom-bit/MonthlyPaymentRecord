@@ -25,7 +25,7 @@ public class PaymentActivity
 
     DatabaseHelper db;
 
-    int customerId = 1;
+    int customerId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +36,11 @@ public class PaymentActivity
             R.layout.activity_payment);
 
         db = new DatabaseHelper(this);
-
+customerId =
+    getIntent().getIntExtra(
+        "customer_id",
+        0
+    );
         tvReceipt =
             findViewById(R.id.tvReceipt);
 
