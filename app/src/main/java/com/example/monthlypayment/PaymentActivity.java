@@ -8,6 +8,10 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 public class PaymentActivity
         extends AppCompatActivity {
 
@@ -19,6 +23,10 @@ public class PaymentActivity
 
     String receiptNo;
 
+    DatabaseHelper db;
+
+    int customerId = 1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -26,6 +34,8 @@ public class PaymentActivity
 
         setContentView(
             R.layout.activity_payment);
+
+        db = new DatabaseHelper(this);
 
         tvReceipt =
             findViewById(R.id.tvReceipt);
@@ -46,14 +56,55 @@ public class PaymentActivity
         btnSavePayment
             .setOnClickListener(v -> {
 
-            String amount =
+            String amountText =
                 etAmount.getText().toString();
 
-            Toast.makeText(
-                this,
-                "Payment Saved",
-                Toast.LENGTH_SHORT
-            ).show();
+            if(amountText.isEmpty()) {
+
+                Toast.makeText(
+                    this,
+                    "Enter Amount",
+                    Toast.LENGTH_SHORT
+                ).show();
+
+                return;
+            }
+
+            double amount =
+                Double.parseDouble(amountText);
+
+            String paymentDate =
+                new SimpleDateFormat(
+                    "dd/MM/yyyy",
+                    Locale.getDefault()
+                ).format(new Date());
+
+            boolean result =
+                db.addPayment(
+                    customerId,
+                    amount,
+                    receiptNo,
+                    paymentDate
+                );
+
+            if(result) {
+
+                Toast.makeText(
+                    this,
+                    "Payment Saved",
+                    Toast.LENGTH_SHORT
+                ).show();
+
+                finish();
+
+            } else {
+
+                Toast.makeText(
+                    this,
+                    "Failed",
+                    Toast.LENGTH_SHORT
+                ).show();
+            }
         });
     }
         }
