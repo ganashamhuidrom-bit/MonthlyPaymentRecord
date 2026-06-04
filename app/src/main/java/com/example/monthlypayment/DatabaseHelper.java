@@ -110,4 +110,29 @@ public boolean addPayment(
         }
     );
 }
+}public double getTotalPayments(
+        int customerId) {
+
+    SQLiteDatabase db =
+        this.getReadableDatabase();
+
+    Cursor c = db.rawQuery(
+        "SELECT SUM(amount) " +
+        "FROM payments " +
+        "WHERE customer_id=?",
+        new String[]{
+            String.valueOf(customerId)
+        }
+    );
+
+    double total = 0;
+
+    if(c.moveToFirst()) {
+
+        total = c.getDouble(0);
+    }
+
+    c.close();
+
+    return total;
 }
