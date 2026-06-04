@@ -12,18 +12,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
         super(context, "payments.db", null, 1);
     }
+@Override
+public void onCreate(SQLiteDatabase db) {
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
+    db.execSQL(
+        "CREATE TABLE customers(" +
+        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+        "name TEXT," +
+        "phone TEXT," +
+        "balance REAL)"
+    );
 
-        db.execSQL(
-            "CREATE TABLE customers(" +
-            "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-            "name TEXT," +
-            "phone TEXT," +
-            "balance REAL)"
-        );
-    }
+    db.execSQL(
+        "CREATE TABLE payments(" +
+        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+        "customer_id INTEGER," +
+        "amount REAL," +
+        "receipt_no TEXT," +
+        "payment_date TEXT)"
+    );
+}
+    
 
     @Override
     public void onUpgrade(SQLiteDatabase db,
@@ -63,4 +72,29 @@ public class DatabaseHelper extends SQLiteOpenHelper {
             "SELECT * FROM customers",
             null);
     }
+}
+public boolean addPayment(
+        int customerId,
+        double amount,
+        String receiptNo,
+        String paymentDate) {
+
+    SQLiteDatabase db =
+        this.getWritableDatabase();
+
+    ContentValues cv =
+        new ContentValues();
+
+    cv.put("customer_id", customerId);
+    cv.put("amount", amount);
+    cv.put("receipt_no", receiptNo);
+    cv.put("payment_date", paymentDate);
+
+    long result =
+        db.insert(
+            "payments",
+            null,
+            cv);
+
+    return result != -1;
 }
