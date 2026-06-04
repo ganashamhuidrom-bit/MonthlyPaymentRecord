@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-
+import android.widget.AdapterView;
 import androidx.appcompat.app.AppCompatActivity;
 
 import java.util.ArrayList;
@@ -21,7 +21,7 @@ public class MainActivity
     DatabaseHelper db;
 
     ArrayList<String> customers;
-
+ArrayList<Integer> customerIds;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -55,9 +55,11 @@ public class MainActivity
 
         customers = new ArrayList<>();
 
+customerIds = new ArrayList<>();
+
         Cursor c = db.getCustomers();
 
-        while(c.moveToNext()) {
+        while(c.moveToNext()) {customerIds.add(c.getInt(0));
 
             String data =
                 c.getString(1)
@@ -76,7 +78,22 @@ public class MainActivity
                 customers
             );
 
-        listCustomers.setAdapter(adapter);
+        listCustomers.setAdapter(adapter);listCustomers.setOnItemClickListener(
+    (parent, view, position, id) -> {
+
+    Intent intent =
+        new Intent(
+            MainActivity.this,
+            PaymentActivity.class
+        );
+
+    intent.putExtra(
+        "customer_id",
+        customerIds.get(position)
+    );
+
+    startActivity(intent);
+});
     }
 
     @Override
