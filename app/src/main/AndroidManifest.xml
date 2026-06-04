@@ -1,4 +1,4 @@
-<activity android:name=".PaymentHistoryActivity"/><activity android:name=".PaymentActivity"/>
+<activity android:name=".PaymentActivity"/>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.monthlypayment">
 
