@@ -96,5 +96,18 @@ public boolean addPayment(
             null,
             cv);
 
-    return result != -1;
+    return result != -1;public Cursor getPaymentsByCustomer(
+        int customerId) {
+
+    SQLiteDatabase db =
+        this.getReadableDatabase();
+
+    return db.rawQuery(
+        "SELECT * FROM payments " +
+        "WHERE customer_id=?",
+        new String[]{
+            String.valueOf(customerId)
+        }
+    );
+}
 }
