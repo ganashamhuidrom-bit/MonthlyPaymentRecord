@@ -78,7 +78,24 @@ customerIds = new ArrayList<>();
                 customers
             );
 
-        listCustomers.setAdapter(adapter);listCustomers.setOnItemClickListener(
+        listCustomers.setAdapter(adapter);listCustomers.setOnItemClickListener(listCustomers.setOnItemLongClickListener(
+    (parent, view, position, id) -> {
+
+    Intent intent =
+        new Intent(
+            MainActivity.this,
+            PaymentHistoryActivity.class
+        );
+
+    intent.putExtra(
+        "customer_id",
+        customerIds.get(position)
+    );
+
+    startActivity(intent);
+
+    return true;
+});
     (parent, view, position, id) -> {
 
     Intent intent =
